@@ -1,16 +1,18 @@
 package pizzaria;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.rmi.server.UID;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public abstract class Pizza {
+public class Pizza {
 
-//    @ApiModelProperty(hidden = true)
-    private final UUID id;
+    @ApiModelProperty(hidden = true)
+    private UUID id;
 
-//    @ApiModelProperty(hidden = true)
-    private final LocalDateTime dataCriacao;
+    @ApiModelProperty(hidden = true)
+    private LocalDateTime dataCadrastro;
 
     private String massa;
     private String queijo;
@@ -18,16 +20,15 @@ public abstract class Pizza {
     private String sabor;
     private int tempoDePreparo;
 
-
-    protected Pizza(){
+    private Pizza() {
         this.id = UUID.randomUUID();
-        this.dataCriacao = LocalDateTime.now();
+        this.dataCadrastro = LocalDateTime.now();
     }
 
     public Pizza(String massa, String queijo, String molho, String sabor, int tempoDePreparo) {
         this();
         this.massa = massa;
-        this.queijo = queijo;
+        this.queijo= queijo;
         this.molho = molho;
         this.sabor = sabor;
         this.tempoDePreparo = tempoDePreparo;
@@ -37,8 +38,8 @@ public abstract class Pizza {
         return id;
     }
 
-    public LocalDateTime getDataCriacao() {
-        return dataCriacao;
+    public LocalDateTime getDataCadrastro() {
+        return dataCadrastro;
     }
 
     public String getMassa() {
@@ -73,7 +74,7 @@ public abstract class Pizza {
         this.sabor = sabor;
     }
 
-    public int getTempoDePreparo() {
+    public Integer getTempoDePreparo() {
         return tempoDePreparo;
     }
 
@@ -85,7 +86,7 @@ public abstract class Pizza {
     public String toString() {
         return "Pizza{" +
                 "id=" + id +
-                ", dataCriacao=" + dataCriacao +
+                ", dataCadrastro=" + dataCadrastro +
                 ", massa='" + massa + '\'' +
                 ", queijo='" + queijo + '\'' +
                 ", molho='" + molho + '\'' +

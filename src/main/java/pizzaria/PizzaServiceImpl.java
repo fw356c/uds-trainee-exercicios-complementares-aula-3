@@ -1,14 +1,58 @@
 package pizzaria;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public class PizzaServiceImpl implements PizzaService{
+import java.util.Set;
+import java.util.UUID;
+
+@Service
+public abstract class PizzaServiceImpl implements PizzaService {
 
     @Autowired
-    private PizzaRepository repository;
+    private PizzaRepository pizzaRepository;
+
 
     @Override
-    public Pizza criar(Pizza pizza) {
-        return this.repository.save(pizza);
+    public Pizza salvar(PizzaDTO pizzaDTO) {
+        Pizza pizza = new Pizza(pizzaDTO.getMassa(), pizzaDTO.getQueijo(), pizzaDTO.getMolho(), pizzaDTO.getSabor(),
+                pizzaDTO.getTempoDePreparo());
+
+        return this.pizzaRepository.save(pizza);
+    }
+
+    @Override
+    public Pizza editar(UUID id, PizzaDTO pizzaDTO) {
+
+        Pizza pizzaRecuperada = this.obter(id);
+
+        remover(id);
+
+        pizzaRecuperada.setMassa(pizzaDTO.getMassa());
+
+        pizzaRecuperada.setQueijo(pizzaDTO.getQueijo());
+
+        pizzaRecuperada.setMolho(pizzaDTO.getMolho());
+
+        pizzaRecuperada.setSabor(pizzaDTO.getSabor());
+
+        pizzaRecuperada.setTempoDePreparo(pizzaDTO.getTempoDePreparo());
+
+        return this.pizzaRepository.save(pizzaRecuperada);
+    }
+
+    @Override
+    public Pizza obter(UUID id) {
+        return this.pizzaRepository.findOne(id);
+    }
+
+    @Override
+    public Set<Pizza> listar() {
+        return this.pizzaRepository.findAll();
+    }
+
+    @Override
+    public void remover(UUID id) {
+        this.pizzaRepository.delete(id);
     }
 }
